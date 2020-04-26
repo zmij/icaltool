@@ -1,5 +1,7 @@
 #  icaltool
 
+![image](https://user-images.githubusercontent.com/2694027/80321246-47060b00-8824-11ea-85af-722a80ea3b0f.png)
+
 A command-line utility to work with OS X calendar events.
 
 It queries the OC X calendar and outputs events in json format
