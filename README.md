@@ -8,7 +8,7 @@ It queries the OC X calendar and outputs events in json format
 
 ## Example Usage
 
-[Join zoom meeting from upcoming calendar event](./nextzoommtg/README.md)
+[Join zoom meeting from upcoming calendar event](./nextzoommtg/)
 
 ## Usage
 
