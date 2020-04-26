@@ -242,28 +242,28 @@ Example:
 }
 ```
 
-| field name                  | type    | description                                                       |
-|-----------------------------|---------|-------------------------------------------------------------------|
-| uid                         | string  | Identity of the event                                             |
-| calendar-id                 | string  | Identity of the calendar event belongs to                         |
-| url                         | string  | URL of the event as provided by the calendar server               |
-| title                       | string  | Title of the event, may be null                                   |
-| notes                       | string  | Notes attached to the event, may be null                          |
-| location                    | string  | Text description of the event's location, may be null             |
-| start                       | string  | Event start date in `dateFormat`                                  |
-| end                         | string  | Event end date in `dateFormat`                                    |
-| all-day                     | bool    | Is the event all day event                                        |
-| recurrent                   | bool    | Is the event recurrent                                            |
-| recurrence-rules            | array of recurrence-rule | Objects describing recurrence [^1]               |
-| detached                    | bool    | Is the recurrent event detached from series [^1]                  |
-| occurence-date              | string  | Date of recurrent event occurrence [^1]                           |
-| status                      | string  | Status of the event                                               |
-| availabiltiy                | string  | Availability of event's attendees                                 |
-| my-status                   | string  | Current user's status in this event                               |
-| attendees                   | array of attendees | Objects desribing participants [^2]                    |
-| organizer                   | object  | Object describing participant that organizes the event            |
-| color                       | string  | Hex RGBA color of the calendar event belongs to. Optional         |
+| field name                  | type    | description                                                             |
+|-----------------------------|---------|-------------------------------------------------------------------------|
+| uid                         | string  | Identity of the event                                                   |
+| calendar-id                 | string  | Identity of the calendar event belongs to                               |
+| url                         | string  | URL of the event as provided by the calendar server                     |
+| title                       | string  | Title of the event, may be null                                         |
+| notes                       | string  | Notes attached to the event, may be null                                |
+| location                    | string  | Text description of the event's location, may be null                   |
+| start                       | string  | Event start date in `dateFormat`                                        |
+| end                         | string  | Event end date in `dateFormat`                                          |
+| all-day                     | bool    | Is the event all day event                                              |
+| recurrent                   | bool    | Is the event recurrent                                                  |
+| recurrence-rules            | array of recurrence-rule | Objects describing recurrence<sup>[1](#fnote1)</sup>   |
+| detached                    | bool    | Is the recurrent event detached from series<sup>[1](#fnote1)</sup>      |
+| occurence-date              | string  | Date of recurrent event occurrence<sup>[1](#fnote1)</sup>               |
+| status                      | string  | Status of the event                                                     |
+| availabiltiy                | string  | Availability of event's attendees                                       |
+| my-status                   | string  | Current user's status in this event                                     |
+| attendees                   | array of attendees | Objects desribing participants<sup>[2](#fnote2)</sup>        |
+| organizer                   | object  | Object describing participant that organizes the event                  |
+| color                       | string  | Hex RGBA color of the calendar event belongs to. Optional               |
 
 
-[^1]: Shown only if `recurrence-rules` option is on
-[^2]: Shown only if `show-attendees` option is on
+<a name="fnote1">[1]</a>: Shown only if `recurrence-rules` option is on<br/>
+<a name="fnote2">[2]</a>: Shown only if `show-attendees` option is on
