@@ -6,6 +6,10 @@ A command-line utility to work with OS X calendar events.
 
 It queries the OC X calendar and outputs events in json format
 
+## Example Usage
+
+[Join zoom meeting from upcoming calendar event](./nextzoommtg/README.md)
+
 ## Usage
 
 The usage is pretty straightforward, you execute the program in terminal passing it arguments. Without any arguments the program executes `events today` subcommand. You can get a desription of options and arguments by running the program with `--help` option.
