@@ -9,8 +9,24 @@
 import Foundation
 import EventKit
 
+func requestAccess(store: EKEventStore, to eventType: EKEntityType) -> Bool {
+    let group = DispatchGroup()
+    var wasGranted = false
+    group.enter()
+    store.requestAccess(to: eventType) { (granted: Bool, NSError) in
+        if granted {
+            NSLog("Granted")
+        } else {
+            NSLog("No access granted")
+        }
+        wasGranted = granted
+        group.leave()
+    }
+    group.wait()
+    return wasGranted
+}
 
-func get_calendar_access(store: EKEventStore) -> Bool {
+func getCalendarAccess(store: EKEventStore, to eventType: EKEntityType) -> Bool {
     switch EKEventStore.authorizationStatus(for: .event) {
     case .authorized:
         NSLog("Authorized")
@@ -22,20 +38,7 @@ func get_calendar_access(store: EKEventStore) -> Bool {
         NSLog("Access denied")
         return false
     case .notDetermined:
-        let group = DispatchGroup()
-        var wasGranted = false
-        group.enter()
-        store.requestAccess(to: .event) { (granted: Bool, NSError) in
-            if granted {
-                NSLog("Granted")
-            } else {
-                NSLog("No access granted")
-            }
-            wasGranted = granted
-            group.leave()
-        }
-        group.wait()
-        return wasGranted
+        return requestAccess(store: store, to: eventType)
     @unknown default:
         break
     }
@@ -60,11 +63,11 @@ extension Calendar {
     }
 }
 
-struct CalendarTool {
+struct EventCalendarTool {
     private let store : EKEventStore = EKEventStore()
     
     init() throws {
-        if !get_calendar_access(store: store) {
+        if !getCalendarAccess(store: store, to: .event) {
             NSLog("No access to calendar")
             throw AccessError()
         }
@@ -94,6 +97,18 @@ struct CalendarTool {
             events.reverse()
         }
         return events
+    }
+
+    func eventById(eventId: String) throws -> EKEvent? {
+        if !requestAccess(store: store, to: .event) {
+            throw AccessError()
+        }
+        let ci = store.calendarItem(withIdentifier: eventId)
+        if let item = ci {
+            return item as? EKEvent
+        }
+        NSLog("ID not found")
+        return nil
     }
 }
 

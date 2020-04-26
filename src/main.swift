@@ -61,7 +61,7 @@ extension EventFilter {
         EKEvent.showRecurrencyRules = showRecurrencyRules
         IcalJsonOutput.dateFormat = dateFormat
         
-        let tool = try CalendarTool()
+        let tool = try EventCalendarTool()
         let cc = tool.calendarList(calendarName: calendar)
         let events = tool.eventList(calendars: cc,
                                     startAfter: startAfter(),
@@ -77,7 +77,7 @@ extension EventFilter {
 class CalendarCommand : ParsableCommand {
     static let configuration = CommandConfiguration(
         abstract: "Outputs events from calendar to console",
-        subcommands: [Events.self, ListCalendars.self, ListDateFormats.self],
+        subcommands: [Events.self, Event.self, ListCalendars.self, ListDateFormats.self],
         defaultSubcommand: Events.self
     )
     required init() {}
@@ -89,7 +89,7 @@ extension CalendarCommand {
             abstract: "List calendars"
         )
         func run() throws {
-            let tool = try CalendarTool()
+            let tool = try EventCalendarTool()
             
             let cc = tool.calendarList(calendarName: nil)
             let encoder = JSONEncoder()
@@ -160,6 +160,41 @@ extension CalendarCommand {
             formatter.dateFormat = "\(IcalJsonOutput.dateFormat)"
             NSLog("Events from \(formatter.string(from: start!)) to \(formatter.string(from: end!)) sort by \(sortOrder)")
             try printEvents()
+        }
+    }
+
+    struct Event : ParsableCommand {
+        static let configuration = CommandConfiguration(
+            abstract: "Get event by ID"
+        )
+
+        @Flag(name: .long, default: false, inversion: .prefixedNo, help: "Show event attendees")
+        var showAttendees: Bool
+        @Flag(name: .customLong("recurrence-rules"), default: false, inversion: .prefixedNo, help: "Show event recurrence rules")
+        var showRecurrencyRules: Bool
+
+        @Option(name: [.customShort("f"), .long], default: IcalJsonOutput.dateFormat, help: "Ouput date format")
+        var dateFormat : String
+
+        @Argument(help: "Event identifier")
+        var eventId : String
+
+        func run() throws {
+            NSLog("Search for event \(eventId)")
+            EKEvent.serializeAttendees = showAttendees
+            EKEvent.showRecurrencyRules = showRecurrencyRules
+            IcalJsonOutput.dateFormat = dateFormat
+
+            let tool = try EventCalendarTool()
+            let event = try tool.eventById(eventId: eventId)
+            var events : [EKEvent] = []
+            if let evt = event {
+                events.append(evt)
+            }
+
+            let encoder = JSONEncoder()
+            let json_data = try encoder.encode(events)
+            print(String(data: json_data, encoding: .utf8) ?? "")
         }
     }
 }

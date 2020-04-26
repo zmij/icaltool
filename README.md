@@ -20,11 +20,17 @@ OPTIONS:
 
 SUBCOMMANDS:
   events                  Work with events
+  event                   Show specific event
   list-calendars          List calendars
   list-date-formats       List supported input date formats
 ```
 
 ### Subcommands
+
+Oputput options for `events` and `event` subcommands
+* `show-attendees` show attendees in json output. By the attendees output is off
+* `recurrency-rules` show recurrency rules in json output. By the recurrency rules output is off
+* `date-format` output dates in specified format
 
 #### events
 
@@ -42,9 +48,6 @@ Common options for `events` and it's subcommands:
   * `end-date` sort events by their end date in ascending order
   * `title` sort events by their title in ascending order
 * `reverse-order` reverse the order of output. Doesn't apply to sort order `none`
-* `show-attendees` show attendees in json output. By the attendees output is off
-* `recurrency-rules` show recurrency rules in json output. By the recurrency rules output is off
-* `date-format` output dates in specified format
 
 The `events` command expects two options
 * `start` Show events that start after this date
@@ -120,6 +123,14 @@ $ icaltool events in P5M  # Events that will happen in 5 months, same as above w
 
 Show events that happen on specified date (time part is ignored, events that start after 00:00 and end before 24:00 on that date are displayed).
 
+#### event
+
+Searches for an event with a certain id, expects it as an argument
+
+```bash
+$ icaltool event XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+```
+
 #### list-calendars
 
 This subcommand doesn't have any options. It just outputs avalilable calendars in json format.
@@ -168,7 +179,7 @@ Example:
 
 ### Events
 
-The output for `events` and subcommands is a JSON array containing events in JSON notation
+The output for `events` and subcommands is a JSON array containing events in JSON notation. The `event` subcommand returns an array containing 0 or 1 event object
 
 Example:
 ```json
